@@ -1,0 +1,9 @@
+# Built test binaries (make -C tests/unit test) - everything named test_* except sources
+test_*
+!test_*.c
+!test_*.py
+__pycache__/
+.pytest_cache/
+# Test helper binary built by make bthome_cli
+bthome_cli
+bthome_cli.exe
