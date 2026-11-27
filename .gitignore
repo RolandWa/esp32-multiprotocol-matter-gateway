@@ -252,3 +252,6 @@ hardware/kicad/jlcpcb/production_files/
 secrets.h
 sdkconfig.local
 *.local
+
+# VS Code per-developer settings (the CMake extension writes an absolute local path into settings.json)
+.vscode/
