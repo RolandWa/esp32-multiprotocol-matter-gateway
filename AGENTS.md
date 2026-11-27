@@ -74,7 +74,7 @@ Check this table before planning anything; details and options are in `docs/OPEN
 | `firmware/rcp-esp32c6/` | 802.15.4 RCP for the C6: Espressif's `ot_rcp` + `OPENTHREAD_NCP_VENDOR_HOOK=y`. **Builds**, never run on a board |
 | `firmware/common/` | **pure C, no ESP-IDF includes** — BTHome parser, unit conversions, ventilation hysteresis, report gate, sensor table, RCP supervisor (`firmware/README.md`). Host-unit-tested; the template `example_sat.*` was deleted |
 | `hardware/kicad/` | *(planned)* KiCad project (+ `jlcpcb/` export, `bom/ibom.html`) |
-| `hardware/enclosure-3d/` | *(planned)* CAD source, STEP/STL, print profiles |
+| `hardware/enclosure-3d/` | OpenSCAD source (`params.scad` = all dimensions), `build.py` regenerates the STLs, mesh/assembly checks, previews. **rev03 ACCEPTED by the owner as the concept 2026-11-27 (R1-R17 of `docs/ENCLOSURE_3D.md` §3a: 78.8 x 69.5 x 30.5 mm, snap-fit lid, no screws, one USB-C opening in the bottom wall, engraved name, two hanging holes on one horizontal line 36 mm apart with drilling marks): computed, not printed, C6 board assumed equal to the S3, RF and thermal unmeasured; only the latest STLs are committed; old revisions are not kept in git (the rev02 mutation tests skip without a local `stl/archive_rev02`)** (`hardware/enclosure-3d/README.md`; `render_outer.py` draws the outside) |
 | `scripts/` | verified helpers: WSL build, flash, KiCad checks/export (see `scripts/README.md`) |
 | `tests/unit/` | hardware-free tests (C harness + pytest). `tests/hw/` *(planned)* hardware tests, never collected by default |
 | `docs/` | the knowledge base (index below) |
