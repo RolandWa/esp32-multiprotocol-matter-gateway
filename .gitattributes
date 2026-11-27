@@ -1,0 +1,52 @@
+# Line endings (this machine has core.autocrlf=true; without these rules a CRLF checkout
+# breaks bash scripts and turns KiCad files into whole-file diffs).
+* text=auto
+
+# Must stay LF: executed by bash inside WSL
+*.sh   text eol=lf
+Makefile text eol=lf
+*.mk   text eol=lf
+
+# Must stay CRLF: cmd.exe is unreliable with LF-only batch files (labels, goto)
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+
+# Source files: LF
+*.c    text eol=lf
+*.h    text eol=lf
+*.cpp  text eol=lf
+*.hpp  text eol=lf
+*.py   text eol=lf
+*.md   text eol=lf
+*.cmake text eol=lf
+CMakeLists.txt text eol=lf
+# ESP-IDF project files: hashed by tests/unit/test_firmware_layout.py and read inside WSL
+*.yml  text eol=lf
+*.csv  text eol=lf
+*.sha256 text eol=lf
+*.projbuild text eol=lf
+sdkconfig.defaults* text eol=lf
+dependencies.lock text eol=lf
+
+# KiCad writes CRLF on Windows. Never let git normalise design files:
+# scripts/kicad_lib.py patches them byte-exactly and relies on the original endings.
+*.kicad_sch -text
+*.kicad_pcb -text
+*.kicad_pro -text
+*.kicad_sym -text
+*.kicad_mod -text
+*.kicad_dru -text
+*.kicad_wks -text
+sym-lib-table -text
+fp-lib-table -text
+
+# Binary
+*.stl  binary
+*.step binary
+*.stp  binary
+*.3mf  binary
+*.pdf  binary
+*.png  binary
+*.jpg  binary
+*.zip  binary
+*.bin  binary
