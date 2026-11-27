@@ -255,3 +255,8 @@ sdkconfig.local
 
 # VS Code per-developer settings (the CMake extension writes an absolute local path into settings.json)
 .vscode/
+
+# Old enclosure revisions are not kept in git (only the latest STLs are committed)
+hardware/enclosure-3d/stl/archive_*/
+# OpenSCAD customizer parameter sets (per-developer)
+hardware/enclosure-3d/enclosure.json
