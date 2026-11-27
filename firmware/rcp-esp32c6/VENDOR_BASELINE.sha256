@@ -1,0 +1,10 @@
+# SHA-256 of files copied UNMODIFIED from ESP-IDF v6.0.2 examples/openthread/ot_rcp (CC0-1.0).
+# Checked by tests/unit/test_firmware_layout.py (line endings normalised to LF). Regenerate only when re-basing on a new IDF tag.
+a76f10a91b54a51d281e5f9b88dfde4f2d6dd4b9699f66b4a9277eee9cbf8765  CMakeLists.txt
+d2c7ab535b61627f29a322aa33e12ee8e8064c8d6e5d43c96c8be8aa8f1aa2d2  partitions.csv
+5f3b3f4cc36098e8cf239b7dd820277ba803ff52d868cbd49e9dee3e27da8b3b  sdkconfig.defaults
+3dc872bc3adab330d01e917016e5c005b3cdce622122f47558c1dbc2415f17cd  main/CMakeLists.txt
+71804225f90009dfa613d3c74fb217144ac64cf356401d44a1b1f64063ccfd75  main/Kconfig.projbuild
+22fe2e7c2934d86188bcc4457df01ca49a16ebe83bda3b7ecf542124e47fcfeb  main/esp_ot_config.h
+53d74f8116203aab14ffbdc72bbbe49073408e875f56fd02a2912daa1a1f4bd3  main/esp_ot_rcp.c
+9af4105236ecb778975c9b23baa8a14a2d6d7404075835fcd7ce2a3d4dbb5846  main/idf_component.yml

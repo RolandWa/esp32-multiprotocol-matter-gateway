@@ -1,0 +1,16 @@
+# SHA-256 of files copied UNMODIFIED from esp-matter release/v1.6.1 (4645784) examples/bridge_apps/zigbee_bridge (CC0/public domain).
+# NOT listed because gateway-modified: CMakeLists.txt, main/app_main.cpp (see README.md).
+# Checked by tests/unit/test_firmware_layout.py (line endings normalised to LF). Regenerate only when re-basing.
+bb14161adb1dd1d4430b6b9b35affd76f6ffc8b950e1a806e0077705ceb0bf8c  partitions.csv
+9dff933ea96c9f5ef1aea94e4364448a88940a50c9b6aed86c38d71143b59f2e  sdkconfig.defaults
+5cabff971a72847fb18bb096d2f1da8b77c91d68f29aa299440d5a834f491abc  sdkconfig.defaults.esp32s3
+4627315bd2fae3aecfa4bf3f01e7d287cb6f5f44bda036842adc6ea9ecf26aa4  sdkconfig.defaults.zb_gw_board
+d193f2c05c770a8198eafdbc1b5b4305dca52697e3469595a583f14f003562fe  main/Kconfig.projbuild
+c619fd84b6490f2305804e2592a1c0a87f100347449d13dd698112b600d1a68d  main/app_zboss.cpp
+543e7028646003eed2e212ad4eda4df8dfedc63b9ad6cf736fed3b20799bc349  main/app_zboss.h
+9f7f726a672dfdd795c25c1e83539d052be0af93ebde1cb7b6238c2ac601eb9c  main/app_zigbee_bridged_device.cpp
+efcb2239381d58f7622f91eea76e50175417e29ccca63110a1069454aadf5a8b  main/app_zigbee_bridged_device.h
+c1430fdd089f9f8a0e94d3b379ec4d45609fcf73118254ecf6dd73ed74bb8715  main/idf_component.yml
+91fbd729df1dfa7c363eac95a601a7f5950229dfb681f63076f4f3bea8bcb840  main/zigbee_bridge.cpp
+8b731b9eb85d78e431987a6e88c35c75602180556d4f2ac8d1240560391c6804  main/zigbee_bridge.h
+10f783038a66454bb9ab3cc66971a5aef2c3ad3b032e6228a41a535569be123c  main/CMakeLists.txt

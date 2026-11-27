@@ -1,0 +1,9 @@
+# Gateway-specific settings on top of Espressif's unmodified sdkconfig.defaults (ot_rcp, IDF v6.0.2).
+# Applied automatically by IDF for the esp32c6 target.
+
+# Vendor hook of the OpenThread NCP: required by esp-zigbee-sdk / esp-matter zigbee_bridge so that the
+# host can talk Zigbee over this RCP (esp-zigbee-sdk zigbee_gateway README, "ot_rcp ... OPENTHREAD_NCP_VENDOR_HOOK").
+CONFIG_OPENTHREAD_NCP_VENDOR_HOOK=y
+
+# Not set here on purpose (open decisions, docs/OPEN_QUESTIONS.md section 4): UART number/pins/baud and
+# RTS/CTS. Until the owner decides, the example's defaults apply: UART0 default pins, 460800 baud, no flow control.
