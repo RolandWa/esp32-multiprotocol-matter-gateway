@@ -1,0 +1,12 @@
+# Gateway-specific settings, applied AFTER the vendor sdkconfig.defaults / sdkconfig.defaults.esp32s3
+# (the host CMakeLists.txt sets SDKCONFIG_DEFAULTS). Keep the vendor files untouched; every change goes here.
+
+# --- Link to the C6 RCP: pins as in the KiCad schematic (hardware/kicad/gw.kicad_sch), numbers in firmware/common/gw_pins.h
+# The vendor Kconfig names are from the RCP's point of view: PIN_TO_RCP_TX = the S3 pad wired to the RCP's TX (= the S3's RX).
+# tests/unit/test_pin_map.py checks these two values against the schematic and gw_pins.h; gw_boot.c has a compile-time check.
+CONFIG_PIN_TO_RCP_TX=44
+CONFIG_PIN_TO_RCP_RX=43
+
+# --- Console on the native USB (USB Serial/JTAG) so that UART0 and its pads GPIO43/44 are free for the link above.
+# (The vendor default console is UART0 on exactly these pads; the vendor zb_gw_board variant also uses USB Serial/JTAG.)
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y

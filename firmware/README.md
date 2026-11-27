@@ -5,8 +5,8 @@ State on 2026-11-27: both images exist and **build** (IDF v6.0.2, esp-matter `re
 | Directory | Content | State |
 |---|---|---|
 | `host-esp32s3/` | ESP-IDF project for the host (XIAO ESP32-S3 Plus). Baseline: esp-matter `zigbee_bridge` + 3 small gateway changes (`README.md` there) | builds; Matter bridge, BLE scanner, BME680/BSEC **not implemented yet** |
-| `rcp-esp32c6/` | ESP-IDF project for the 802.15.4 radio co-processor (XIAO ESP32-C6): Espressif's `ot_rcp` + `OPENTHREAD_NCP_VENDOR_HOOK=y` | builds; UART pins/baud are the example's defaults (open decision) |
-| `common/` | **pure C99, no ESP-IDF includes**, host-unit-tested, also an IDF component named `common` | 6 modules, see below |
+| `rcp-esp32c6/` | ESP-IDF project for the 802.15.4 radio co-processor (XIAO ESP32-C6): Espressif's `ot_rcp` + `OPENTHREAD_NCP_VENDOR_HOOK=y` + the link pins of the schematic | builds; never run on a board |
+| `common/` | **pure C99, no ESP-IDF includes**, host-unit-tested, also an IDF component named `common` | 7 modules, see below |
 
 `common/` modules (all with `gw_` prefix, a header and `tests/unit/test_<module>.c`):
 
@@ -18,12 +18,13 @@ State on 2026-11-27: both images exist and **build** (IDF v6.0.2, esp-matter `re
 | `gw_report` | report a value on change ≥ delta or every N ms (injected, wrap-safe time) |
 | `gw_sensor_table` | allow-list of BLE sensors by MAC, packet-id de-duplication, partial-packet merge, staleness |
 | `gw_rcp_supervisor` | reset / boot-timeout / dead-RCP / backoff state machine for the C6 (no GPIO access; caller executes the action) |
+| `gw_pins` | header only: GPIO numbers of both modules, **following the KiCad schematic** (`tests/unit/test_pin_map.py` compares it with the exported netlist) |
 
 Rules (details: `../docs/CODING_GUIDELINES.md`):
 
 * every new decision/protocol/state machine goes to `common/` with a test in `../tests/unit/` — hardware access stays in thin wrappers;
 * files copied from Espressif's examples stay **byte-identical**; the gateway's own changes are an explicit list in each project's `README.md` and `VENDOR_BASELINE.sha256` (`../tests/unit/test_firmware_layout.py` enforces it);
-* no GPIO number outside the per-target pin header (not written yet: the pin map is an open decision); commit `sdkconfig.defaults*` and `dependencies.lock`, never `sdkconfig`;
+* no GPIO number outside `common/gw_pins.h` (the schematic is the source of truth, the header follows it, a test compares them); commit `sdkconfig.defaults*` and `dependencies.lock`, never `sdkconfig`;
 * build with `..\scripts\build.bat` (WSL) — command lines in each project's README; flash with `..\scripts\flash.bat`; both images must build before a change is "done".
 
 ## References

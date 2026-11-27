@@ -8,9 +8,10 @@ SPDX/notice: public domain / CC0), built with **ESP-IDF v6.0.2**. This is the ve
 
 | File | Change |
 |---|---|
-| `CMakeLists.txt` | project renamed `gateway_host`; `../common` added to `EXTRA_COMPONENT_DIRS` |
+| `CMakeLists.txt` | project renamed `gateway_host`; `../common` added to `EXTRA_COMPONENT_DIRS`; `SDKCONFIG_DEFAULTS` = vendor `sdkconfig.defaults` + our `sdkconfig.defaults.gateway` |
+| `sdkconfig.defaults.gateway` | new: RCP link pins as in the KiCad schematic (`PIN_TO_RCP_TX=44`, `PIN_TO_RCP_RX=43`) and the console moved to USB Serial/JTAG (frees UART0's pads GPIO43/44) |
 | `main/app_main.cpp` | `#include "gw_boot.h"` and one call `gw_boot_banner();` after `nvs_flash_init()` |
-| `main/gw_boot.c`, `main/gw_boot.h` | new: version banner + fixed-vector self-test of `firmware/common` on the target (log only) |
+| `main/gw_boot.c`, `main/gw_boot.h` | new: version banner, the RCP link parameters, a fixed-vector self-test of `firmware/common` on the target (log only), and compile-time checks that the sdkconfig pins equal `gw_pins.h` |
 
 `main/CMakeLists.txt` is deliberately the vendor file: a `main` without `REQUIRES` depends on every component in the build
 (including `common`), and adding a `PRIV_REQUIRES` line removed that and broke the include paths of the Matter headers (found when building).

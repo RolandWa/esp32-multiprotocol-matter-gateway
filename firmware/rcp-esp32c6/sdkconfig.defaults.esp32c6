@@ -5,5 +5,11 @@
 # host can talk Zigbee over this RCP (esp-zigbee-sdk zigbee_gateway README, "ot_rcp ... OPENTHREAD_NCP_VENDOR_HOOK").
 CONFIG_OPENTHREAD_NCP_VENDOR_HOOK=y
 
-# Not set here on purpose (open decisions, docs/OPEN_QUESTIONS.md section 4): UART number/pins/baud and
-# RTS/CTS. Until the owner decides, the example's defaults apply: UART0 default pins, 460800 baud, no flow control.
+# Link to the S3 host: pins as in the KiCad schematic (hardware/kicad/gw.kicad_sch), numbers in firmware/common/gw_pins.h.
+# These are also the chip's UART0 default pins (soc/esp32c6 uart_pins.h: U0TXD 16, U0RXD 17), so setting them explicitly
+# changes no behaviour; it makes the decision visible. tests/unit/test_pin_map.py checks them against the schematic.
+# UART port (0), 460800 baud and "no flow control" stay as in the vendor esp_ot_config.h; esp_openthread_uart_config_t has
+# no RTS/CTS pins, so the schematic's RTS/CTS wires are not used by this stack.
+CONFIG_OPENTHREAD_UART_PIN_MANUAL=y
+CONFIG_OPENTHREAD_UART_RX_PIN=17
+CONFIG_OPENTHREAD_UART_TX_PIN=16

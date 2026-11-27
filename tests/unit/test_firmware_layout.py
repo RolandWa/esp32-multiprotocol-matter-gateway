@@ -24,7 +24,7 @@ UNIT = os.path.join(REPO, "tests", "unit")
 # Files in each project that are NOT vendor code and not in the manifest (the "gateway's own" list).
 GATEWAY_OWN = {
     "host-esp32s3": {"CMakeLists.txt", "main/app_main.cpp", "main/gw_boot.c", "main/gw_boot.h",
-                     "README.md", "VENDOR_BASELINE.sha256", "dependencies.lock"},
+                     "sdkconfig.defaults.gateway", "README.md", "VENDOR_BASELINE.sha256", "dependencies.lock"},
     "rcp-esp32c6": {"sdkconfig.defaults.esp32c6", "README.md", "VENDOR_BASELINE.sha256", "dependencies.lock"},
 }
 PROJECTS = sorted(GATEWAY_OWN)
@@ -84,14 +84,15 @@ def test_common_cmakelists_lists_every_source_file():
 
 
 def test_every_common_module_has_a_unit_test_and_vice_versa():
-    modules = {os.path.basename(p)[:-2] for p in glob.glob(os.path.join(COMMON, "*.c"))}
+    # a module is a gw_*.h header; header-only modules (gw_pins.h) have no .c file
+    modules = {os.path.basename(p)[:-2] for p in glob.glob(os.path.join(COMMON, "*.h"))}
     tests = {os.path.basename(p)[len("test_"):-2] for p in glob.glob(os.path.join(UNIT, "test_*.c"))}
     assert modules - tests == set(), "modules without a unit test: %s" % sorted(modules - tests)
     assert tests - modules == set(), "unit tests without a module: %s" % sorted(tests - modules)
 
 
 def test_every_common_module_has_a_header_with_the_gw_prefix():
-    for path in glob.glob(os.path.join(COMMON, "*.c")):
+    for path in glob.glob(os.path.join(COMMON, "*.[ch]")):
         base = os.path.basename(path)[:-2]
         assert base.startswith("gw_"), "public modules of common/ carry the gw_ prefix: %s" % base
         assert os.path.exists(os.path.join(COMMON, base + ".h")), base
@@ -140,17 +141,21 @@ def test_rcp_keeps_the_ncp_vendor_hook_and_stays_an_rcp():
     assert not re.search(r"^CONFIG_OPENTHREAD_FTD=y", vendor, re.M)
 
 
-def test_rcp_does_not_pin_uart_pins_before_the_owner_decides():
-    # docs/OPEN_QUESTIONS.md section 4: the link parameters are an open decision; setting them silently would hide it
-    gw = _read(os.path.join(FW, "rcp-esp32c6", "sdkconfig.defaults.esp32c6")).decode("utf-8")
-    active = [l for l in gw.splitlines() if l.strip() and not l.lstrip().startswith("#")]
-    assert not [l for l in active if "UART" in l], active
-
-
 def test_host_cmake_wires_in_common_and_keeps_the_project_name():
     text = _read(os.path.join(FW, "host-esp32s3", "CMakeLists.txt")).decode("utf-8")
     assert re.search(r'"\$\{CMAKE_CURRENT_LIST_DIR\}/\.\./common"', text)
     assert re.search(r"^project\(gateway_host\)", text, re.M)
+
+
+def test_host_cmake_loads_the_gateway_overrides_after_the_vendor_defaults():
+    text = _read(os.path.join(FW, "host-esp32s3", "CMakeLists.txt")).decode("utf-8")
+    assert len(re.findall(r"SDKCONFIG_DEFAULTS", text)) == 1, "SDKCONFIG_DEFAULTS must be set exactly once"
+    m = re.search(r'^set\(SDKCONFIG_DEFAULTS "([^"]+)"\)', text, re.M)
+    assert m, "SDKCONFIG_DEFAULTS is not set in the host CMakeLists.txt"
+    files = m.group(1).split(";")
+    assert files == ["sdkconfig.defaults", "sdkconfig.defaults.gateway"], files
+    # it must be set before project.cmake is included, otherwise IDF has already read the default value
+    assert text.index("SDKCONFIG_DEFAULTS") < text.index("include($ENV{IDF_PATH}/tools/cmake/project.cmake)")
 
 
 def test_host_main_still_calls_the_boot_banner():

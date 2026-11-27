@@ -23,6 +23,10 @@ set(PROJECT_VER_NUMBER 1)
 set(ESP_MATTER_PATH $ENV{ESP_MATTER_PATH})
 set(MATTER_SDK_PATH ${ESP_MATTER_PATH}/connectedhomeip/connectedhomeip)
 
+# gateway: our overrides live in sdkconfig.defaults.gateway and are applied after the vendor sdkconfig.defaults
+# (IDF also loads the sdkconfig.defaults.<target> variant of each listed file)
+set(SDKCONFIG_DEFAULTS "sdkconfig.defaults;sdkconfig.defaults.gateway")
+
 # This should be done before using the IDF_TARGET variable.
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 include($ENV{ESP_MATTER_DEVICE_PATH}/esp_matter_device.cmake)

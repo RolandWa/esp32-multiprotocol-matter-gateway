@@ -7,10 +7,16 @@
 #include "esp_system.h"
 
 #include "gw_bthome.h"
+#include "gw_pins.h"
 #include "gw_units.h"
 #include "gw_ventilation.h"
 
 static const char *TAG = "gw_boot";
+
+/* The vendor Kconfig names are from the RCP's side: PIN_TO_RCP_TX is the S3 pad wired to the RCP's TX, i.e. our RX.
+ * The values in sdkconfig.defaults.gateway must equal gw_pins.h (which follows the KiCad schematic). */
+_Static_assert(CONFIG_PIN_TO_RCP_TX == GW_S3_PIN_RCP_UART_RX, "sdkconfig PIN_TO_RCP_TX differs from gw_pins.h / the schematic");
+_Static_assert(CONFIG_PIN_TO_RCP_RX == GW_S3_PIN_RCP_UART_TX, "sdkconfig PIN_TO_RCP_RX differs from gw_pins.h / the schematic");
 
 bool gw_selftest(void)
 {
@@ -44,6 +50,8 @@ void gw_boot_banner(void)
     const esp_app_desc_t *app = esp_app_get_description();
     ESP_LOGI(TAG, "gateway host: app %s, project %s, built %s %s", app->version, app->project_name, app->date, app->time);
     ESP_LOGI(TAG, "ESP-IDF %s", esp_get_idf_version());
+    ESP_LOGI(TAG, "RCP link: UART%d TX=GPIO%d RX=GPIO%d %d baud, no flow control", GW_S3_RCP_UART_PORT,
+             GW_S3_PIN_RCP_UART_TX, GW_S3_PIN_RCP_UART_RX, GW_RCP_UART_BAUD);
     if (gw_selftest()) {
         ESP_LOGI(TAG, "logic self-test: ok");
     } else {
